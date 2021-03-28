@@ -2,17 +2,34 @@ const User = require("../models/User");
 
 const userCtrl = {};
 
-userCtrl.getUser = async (req, res) => {
-  const { id } = req.params;
+userCtrl.getUsers = async (req, res) => {
   try {
-    const user = await User.findById(id);
-    res.json({ user: user });
+    const users = await User.find();
+    res.json({ users });
   } catch (err) {
     console.log(err);
     res.json({ error: err });
   }
 };
 
-userCtrl.createUser = async (req, res) => {};
-userCtrl.deleteUser = async (req, res) => {};
+userCtrl.createUser = async (req, res) => {
+  try {
+    const { username } = req.body;
+    const newUser = await new User({ username });
+    await newUser.save();
+    res.json({ message: "User created" });
+  } catch (err) {
+    console.log(err);
+    res.json({ error: err }).status(500);
+  }
+};
+userCtrl.deleteUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await User.findByIdAndDelete(id);
+    res.json({ message: "user deleted" });
+  } catch (err) {
+    res.json({ error: "Something went wrong" }).status(500);
+  }
+};
 module.exports = userCtrl;
