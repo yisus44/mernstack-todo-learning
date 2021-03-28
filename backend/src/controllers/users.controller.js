@@ -1,7 +1,18 @@
+const User = require("../models/User");
+
 const userCtrl = {};
 
-userCtrl.getUser = (req, res) => res.send("get");
-userCtrl.createUser = (req, res) => res.send("post");
-userCtrl.deleteUser = (req, res) => res.send("delete");
+userCtrl.getUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    res.json({ user: user });
+  } catch (err) {
+    console.log(err);
+    res.json({ error: err });
+  }
+};
 
+userCtrl.createUser = async (req, res) => {};
+userCtrl.deleteUser = async (req, res) => {};
 module.exports = userCtrl;
