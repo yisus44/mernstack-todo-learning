@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+
+const userRouter = require("./routes/users");
+const notesRouter = require("./routes/notes");
 //settings
 app.set("port", process.env.PORT || 4000);
 
@@ -8,8 +11,8 @@ app.set("port", process.env.PORT || 4000);
 app.use(express.json());
 app.use(cors());
 //routes
-app.get("/", (req, res) => res.send("Welcome"));
-app.get("/api/users", (req, res) => res.send("User notes"));
-app.get("/api/notes", (req, res) => res.send("User routes"));
+app.use("/api/users", userRouter);
+app.use("/api/notes", notesRouter);
 
+//////////////////////
 module.exports = app;
