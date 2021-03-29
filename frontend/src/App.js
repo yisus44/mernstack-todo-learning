@@ -1,12 +1,18 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import React from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Navigation from "./components/navigation/navigation.component";
 import NoteList from "./components/notelist/notelist.component";
-import CreateNote from "./components/create-note/create-note.component";
-import CreateUser from "./components/create-user/create-user.component";
+
+const CreateUser = React.lazy(() =>
+  import("./components/create-user/create-user.component")
+);
+
+const CreateNote = React.lazy(() =>
+  import("./components/create-note/create-note.component")
+);
 
 function App() {
   return (
@@ -15,9 +21,13 @@ function App() {
         <Navigation />
         <div className="container p-4">
           <Route exact path="/" component={NoteList} />
-          <Route path="/edit/:id" component={CreateNote} />
-          <Route path="/create" component={CreateNote} />
-          <Route path="/user" component={CreateUser} />
+          <Suspense
+            fallback={<div>We didnt find what you are looking for...</div>}
+          >
+            <Route path="/edit/:id" component={CreateNote} />
+            <Route path="/create" component={CreateNote} />
+            <Route path="/user" component={CreateUser} />
+          </Suspense>
         </div>
       </Router>
     </div>
