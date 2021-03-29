@@ -9,7 +9,6 @@ class UserList extends React.Component {
     try {
       await axios.delete(`http://localhost:3000/api/users/${id}`);
       this.props.getUsers(true);
-      this.forceUpdate();
     } catch (err) {
       console.log(err);
     }

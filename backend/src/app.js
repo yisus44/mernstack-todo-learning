@@ -9,7 +9,6 @@ app.set("port", process.env.PORT || 4000);
 
 //middlewares
 app.use(express.json());
-app.use(cors());
 //routes
 app.use("/api/users", userRouter);
 app.use("/api/notes", notesRouter);

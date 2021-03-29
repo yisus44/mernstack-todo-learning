@@ -8,7 +8,9 @@ userCtrl.getUsers = async (req, res) => {
     res.json({ users });
   } catch (err) {
     console.log(err);
-    res.json({ error: err });
+    res
+      .json({ error: "Something went wrong fetching the users.." })
+      .status(500);
   }
 };
 
@@ -29,6 +31,7 @@ userCtrl.deleteUser = async (req, res) => {
     await User.findByIdAndDelete(id);
     res.json({ message: "user deleted" });
   } catch (err) {
+    console.log(err);
     res.json({ error: "Something went wrong" }).status(500);
   }
 };

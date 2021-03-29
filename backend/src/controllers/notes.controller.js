@@ -3,8 +3,14 @@ const notesCtrl = {};
 const Note = require("../models/Note");
 
 notesCtrl.getNotes = async (req, res) => {
-  const notes = await Note.find();
-  res.json(notes);
+  try {
+    const notes = await Note.find();
+    res.json(notes);
+  } catch (err) {
+    console.log(err);
+
+    res.json({ error: "Something went wrong fetching your data" }).status(500);
+  }
 };
 
 notesCtrl.createNote = async (req, res) => {
@@ -17,11 +23,11 @@ notesCtrl.createNote = async (req, res) => {
       author,
     });
     await newNote.save();
+    res.send({ message: "post : notes saved" });
   } catch (err) {
     console.log(err);
+    res.send({ error: "Something went wrong with your request" }).status(500);
   }
-
-  res.send({ message: "post : notes saved" });
 };
 
 notesCtrl.deleteNote = async (req, res) => {
@@ -30,6 +36,7 @@ notesCtrl.deleteNote = async (req, res) => {
     await Note.findByIdAndDelete(id);
     res.json({ message: "note deleted" });
   } catch (err) {
+    console.log(err);
     res.json({ error: "something went wrong" }).status(500);
   }
 };
@@ -45,7 +52,6 @@ notesCtrl.updateNote = async (req, res) => {
       author,
       id,
     });
-    console.log(resp);
     res.status(200).json({ message: "updated" });
   } catch (err) {
     console.log(err);
@@ -60,7 +66,7 @@ notesCtrl.getNote = async (req, res) => {
     res.json(note);
   } catch (err) {
     console.log(err);
-    res.status(500);
+    res.json({ error: "Something went wrong fetching your data" }).status(500);
   }
 };
 module.exports = notesCtrl;
