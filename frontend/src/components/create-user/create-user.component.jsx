@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
 //TODO: use redux to manage state and refactor the form component to make it separated
+import NewUserForm from "../new-user-form/new-user.component";
+import UserList from "../user-list/user-list.component";
 export default class CreateUser extends Component {
   state = {
     users: [],
     username: "",
   };
-
+  //onSubmit
+  //onChangeUserName
   async componentDidMount() {
     try {
       await this.getUsers();
@@ -16,10 +19,11 @@ export default class CreateUser extends Component {
     }
   }
 
-  async getUsers() {
+  async getUsers(isCalledFromChild = false) {
     const {
       data: { users },
     } = await axios.get("http://localhost:3000/api/users");
+    if (isCalledFromChild) return;
     this.setState({ users: users });
   }
 
@@ -55,35 +59,8 @@ export default class CreateUser extends Component {
   render() {
     return (
       <div className="row">
-        <div className="col-md-4">
-          <div className="card card-body">
-            <h3>Create new user</h3>
-            <form onSubmit={this.onSubmit}>
-              <input
-                type="text"
-                className="form-control"
-                onChange={this.onChangeUserName}
-                value={this.state.username}
-              />
-              <button type="submit" className="btn btn-primary">
-                Save
-              </button>
-            </form>
-          </div>
-        </div>
-        <div className="col-md-8">
-          <ul className="list-group">
-            {this.state.users.map((user) => (
-              <li
-                key={user._id}
-                className="list-group-item list-group-item-action"
-                onDoubleClick={() => this.deleteUser(user._id)}
-              >
-                {user.username}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <NewUserForm getUsers={this.getUsers} />
+        <UserList getUsers={this.getUsers} users={this.state.users} />
       </div>
     );
   }

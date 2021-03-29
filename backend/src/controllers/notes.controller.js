@@ -36,13 +36,17 @@ notesCtrl.deleteNote = async (req, res) => {
 notesCtrl.updateNote = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(req.params.id);
+    console.log(id);
     const { title, description, author } = req.body;
-    await Note.findOneAndUpdate(id, {
+    const resp = await Note.findByIdAndUpdate(req.params.id, {
       title,
       description,
       author,
+      id,
     });
-    res.json({ message: "note updated" });
+    console.log(resp);
+    res.status(200).json({ message: "updated" });
   } catch (err) {
     console.log(err);
     res.json({ error: "note NOT updated" }).status(500);
