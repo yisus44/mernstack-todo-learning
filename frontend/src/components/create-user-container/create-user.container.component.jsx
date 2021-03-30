@@ -1,15 +1,18 @@
 import React, { Component } from "react";
 import axios from "axios";
-//TODO: use redux to manage state and refactor the form component to make it separated
+
 import NewUserForm from "../new-user-form/new-user.component";
 import UserList from "../user-list/user-list.component";
 export default class CreateUser extends Component {
-  state = {
-    users: [],
-    username: "",
-  };
-  //onSubmit
-  //onChangeUserName
+  constructor(props) {
+    super(props);
+    //passing this function to the child
+    this.getUsers = this.getUsers.bind(this);
+    this.state = {
+      users: [],
+      username: "",
+    };
+  }
   async componentDidMount() {
     try {
       await this.getUsers();
@@ -19,11 +22,10 @@ export default class CreateUser extends Component {
     }
   }
 
-  async getUsers(isCalledFromChild = false) {
+  async getUsers() {
     const {
       data: { users },
     } = await axios.get("http://localhost:3000/api/users");
-    if (isCalledFromChild) return;
     this.setState({ users: users });
   }
 
@@ -43,7 +45,7 @@ export default class CreateUser extends Component {
       this.getUsers();
       this.setState({ username: "" });
     } catch (err) {
-      console.log(err);
+      alert("Invalid information");
     }
   };
 

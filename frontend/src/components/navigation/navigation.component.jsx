@@ -27,7 +27,6 @@ export default class Navigation extends Component {
                 <Link className="nav-link" to="/">
                   View notes
                 </Link>
-
                 <Link className="nav-link" to="/create">
                   Create note
                 </Link>

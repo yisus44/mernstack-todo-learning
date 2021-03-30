@@ -8,7 +8,7 @@ class UserList extends React.Component {
   deleteUser = async (id) => {
     try {
       await axios.delete(`http://localhost:3000/api/users/${id}`);
-      this.props.getUsers(true);
+      this.props.getUsers();
     } catch (err) {
       console.log(err);
     }

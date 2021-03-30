@@ -8,7 +8,6 @@ notesCtrl.getNotes = async (req, res) => {
     res.json(notes);
   } catch (err) {
     console.log(err);
-
     res.json({ error: "Something went wrong fetching your data" }).status(500);
   }
 };
@@ -43,14 +42,14 @@ notesCtrl.deleteNote = async (req, res) => {
 notesCtrl.updateNote = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(req.params.id);
-    console.log(id);
-    const { title, description, author } = req.body;
-    const resp = await Note.findByIdAndUpdate(req.params.id, {
+    const { title, description, author, date } = req.body;
+    console.log(req.body);
+    await Note.findByIdAndUpdate(req.params.id, {
       title,
       description,
       author,
       id,
+      date,
     });
     res.status(200).json({ message: "updated" });
   } catch (err) {

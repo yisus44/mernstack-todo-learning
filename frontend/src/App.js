@@ -7,7 +7,9 @@ import Navigation from "./components/navigation/navigation.component";
 import NoteList from "./components/notelist/notelist.component";
 
 const CreateUser = React.lazy(() =>
-  import("./components/create-user/create-user.component")
+  import(
+    "./components/create-user-container/create-user.container.component.jsx"
+  )
 );
 
 const CreateNote = React.lazy(() =>

@@ -17,7 +17,7 @@ class NewUserForm extends React.Component {
       await axios.post("http://localhost:3000/api/users", {
         username: this.state.username,
       });
-      this.props.getUsers(true);
+      this.props.getUsers();
       this.setState({ username: "" });
       this.forceUpdate();
     } catch (err) {

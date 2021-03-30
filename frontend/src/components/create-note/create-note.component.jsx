@@ -23,20 +23,18 @@ export default class CreateNote extends Component {
       date,
       author: this.state.userSelected,
     };
-
+    alert(new Date(date));
     if (this.state.editing) {
       console.log("http://localhost:3000/api/notes/" + this.state._id);
-      const res = await axios.put(
+      await axios.put(
         "http://localhost:3000/api/notes/" + this.state._id,
         newNote
       );
-      console.log(res);
-      alert("a");
     } else {
       try {
         await axios.post("http://localhost:3000/api/notes/", newNote);
       } catch (err) {
-        console.log(err);
+        alert("Something went wrong with your request");
       }
     }
     window.location.href = "/";
@@ -55,11 +53,12 @@ export default class CreateNote extends Component {
         "http://localhost:3000/api/notes/" + this.props.match.params.id
       );
 
+      const { title, description, date, author } = data;
       this.setState({
-        title: data.title,
-        description: data.description,
-        date: new Date(data.date),
-        userSelected: data.author,
+        title,
+        description,
+        date: new Date(date),
+        userSelected: author,
         editing: true,
         _id: this.props.match.params.id,
       });
